@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090414">
+<title>GTA VI — Global Launch Countdown</title>
+<style>
+:root{--bg:#080412;--panel:rgba(17,8,34,.88);--pink:#f044c8;--violet:#9a4dff;--cyan:#62e9ff;--gold:#ffe46b;--muted:#a99abf}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#080412 url("./gta6-background.jpg") center center / cover fixed no-repeat;color:#fff;font-family:Arial,Helvetica,sans-serif}
+body{padding:18px;overflow-x:hidden;position:relative}body:before{content:"";position:fixed;inset:0;background:linear-gradient(180deg,rgba(7,3,18,.60),rgba(8,3,20,.82));z-index:-1;pointer-events:none}.shell{max-width:1500px;margin:auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.live{display:inline-flex;align-items:center;gap:8px;background:#f01458;padding:8px 13px;border-radius:7px;font-weight:900;letter-spacing:1.5px;box-shadow:0 0 22px #f0145870;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:white;box-shadow:0 0 10px white}
+.brand{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:5px}.brand img{display:block;width:clamp(145px,22vw,245px);height:auto;max-height:118px;object-fit:contain;filter:drop-shadow(0 0 14px #f044c8)}
+.brand span{display:block;color:#ff8cdd;font-size:10px;font-weight:900;letter-spacing:4px;text-shadow:0 0 10px #e943d5}
+h1{text-align:center;font-size:clamp(19px,3vw,34px);letter-spacing:3px;margin:10px 0 5px;text-transform:uppercase;text-shadow:0 0 18px #c13cff}
+.sub{text-align:center;color:#d8c6ed;font-size:12px;letter-spacing:2px;margin-bottom:16px}
+.hero{border:1px solid #a34bff80;border-radius:18px;background:linear-gradient(135deg,#120b28ed,#090515f2);box-shadow:0 0 35px #8d2cff30,inset 0 0 35px #a329ff12;padding:14px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:-40%;background:linear-gradient(115deg,transparent 35%,#f34ad00b 50%,transparent 65%);animation:sweep 9s linear infinite;pointer-events:none}
+@keyframes sweep{to{transform:translateX(30%)}}
+.topcount{text-align:center;position:relative;z-index:1;padding:5px 0 12px}
+.kicker{color:#ff6bd5;font-weight:900;letter-spacing:3px;font-size:12px}
+.timer{display:flex;justify-content:center;gap:clamp(8px,2vw,24px);margin:10px auto}
+.unit{min-width:65px}.num{font-variant-numeric:tabular-nums;font-size:clamp(28px,6vw,64px);font-weight:1000;color:#fff;text-shadow:0 0 16px #d83dff}
+.unit small{display:block;color:#bfaed4;letter-spacing:2px;font-size:10px;margin-top:1px}
+.nextline{color:#e7d9f7;font-size:13px}.nextline strong{color:var(--gold)}
+.mapwrap{position:relative;width:100%;margin:0 auto;min-height:300px}
+.world{width:100%;height:auto;display:block;max-height:540px}
+.land{fill:#55257a;stroke:#b65bff;stroke-width:1.5;opacity:.88;filter:drop-shadow(0 0 5px #b52dff)}
+.graticule{fill:none;stroke:#9d55d8;stroke-width:.7;opacity:.22}
+.marker{cursor:pointer}.marker circle{fill:#ff64db;stroke:#fff;stroke-width:2;filter:drop-shadow(0 0 8px #ff38c9);animation:pulse 1.8s infinite}
+.marker text{font-size:12px;fill:#fff;font-weight:bold;text-anchor:middle;paint-order:stroke;stroke:#160b2b;stroke-width:3px}
+.marker.active circle{fill:#ffe66d;stroke:#fff;stroke-width:3;filter:drop-shadow(0 0 13px #ffe66d)}
+@keyframes pulse{50%{r:8;opacity:.65}}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:#cbb9df;font-size:11px;margin:0 0 12px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#ff64db}.legend .gold{background:#ffe66d}
+.lower{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:13px}
+.panel{background:var(--panel);border:1px solid #8e49ca70;border-radius:13px;padding:13px;min-width:0}
+.panel h2{font-size:13px;letter-spacing:2px;color:#ff83dc;margin:0 0 10px}
+.countrylist{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:250px;overflow:auto}
+.country{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:#ffffff08;border:1px solid #ffffff10;font-size:12px}
+.country .flag{font-size:20px}.country .cname{flex:1;min-width:0}.country .state{font-size:9px;color:#b9a9ce;display:block;margin-top:3px}
+.country.active{border-color:#ffe66d;background:#ffe66d14;box-shadow:0 0 12px #ffe66d22}
+.country.done{opacity:.55}.country .eta{font-variant-numeric:tabular-nums;color:#ffe66d;font-weight:bold;font-size:11px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button{border:1px solid #c05bff;background:#30114b;color:white;padding:10px 13px;border-radius:8px;font-weight:bold;cursor:pointer}
+button:hover{background:#542078}button.primary{background:linear-gradient(90deg,#a22ed6,#ed3caa);border:0}
+input[type=range]{accent-color:#ed4fc7;width:100px}
+.note{font-size:10px;color:#a99abf;line-height:1.5;margin-top:10px}
+footer{text-align:center;color:#78698d;font-size:10px;margin:14px 0}
+@media(max-width:700px){header{align-items:center}.brand img{width:clamp(125px,36vw,190px);max-height:90px}.brand span{font-size:8px;letter-spacing:2px}body{padding:10px}.lower{grid-template-columns:1fr}.mapwrap{min-height:190px}.countrylist{max-height:200px}.hero{padding:9px}.unit{min-width:54px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header><div class="live"><i class="dot"></i> LIVE COUNTDOWN</div><div class="brand"><img src="./gta6-logo.png" alt="Grand Theft Auto VI logo"><span>VI • GLOBAL LAUNCH</span></div></header>
+<h1>Worldwide Launch Tracker</h1><div class="sub">ONE WORLD • ONE LAUNCH • EVERY TIME ZONE</div>
+<section class="hero">
+  <div class="topcount">
+    <div class="kicker" id="headline">COUNTDOWN TO THE NEXT REGION</div>
+    <div class="timer">
+      <div class="unit"><div class="num" id="days">00</div><small>DAYS</small></div>
+      <div class="unit"><div class="num" id="hours">00</div><small>HOURS</small></div>
+      <div class="unit"><div class="num" id="mins">00</div><small>MINUTES</small></div>
+      <div class="unit"><div class="num" id="secs">00</div><small>SECONDS</small></div>
+    </div>
+    <div class="nextline" id="nextline">Loading regional launch schedule…</div>
+  </div>
+  <div class="mapwrap">
+  <svg class="world" viewBox="0 0 1000 480" role="img" aria-label="Stylized glowing world map with launch-region markers">
+    <defs><radialGradient id="ocean"><stop stop-color="#281044"/><stop offset="1" stop-color="#090515"/></radialGradient></defs>
+    <rect width="1000" height="480" fill="url(#ocean)" rx="12"/>
+    <g class="graticule">
+      <path d="M0 120H1000M0 240H1000M0 360H1000M200 0V480M400 0V480M600 0V480M800 0V480"/>
+      <ellipse cx="500" cy="240" rx="470" ry="210"/>
+    </g>
+    <!-- Stylized continent silhouettes, deliberately illustrative rather than a border-accurate map -->
+    <g class="land">
+      <path d="M75 100L115 60 175 55 215 75 250 68 280 100 267 132 235 142 220 180 190 196 178 230 145 224 132 190 105 175 90 140Z"/>
+      <path d="M220 225L258 215 285 242 277 280 260 315 250 365 225 420 207 385 210 340 190 300 198 260Z"/>
+      <path d="M390 95L425 72 475 70 500 89 540 78 580 95 605 125 585 150 550 146 535 170 500 165 475 190 440 176 420 148 395 137Z"/>
+      <path d="M455 185L490 175 535 190 560 225 550 275 525 330 495 355 470 325 450 275 430 235Z"/>
+      <path d="M565 90L620 60 690 55 755 80 815 95 865 130 845 165 790 170 755 195 710 185 675 210 640 180 600 175 580 140Z"/>
+      <path d="M760 260L805 245 850 260 875 290 855 325 810 335 775 310Z"/>
+      <path d="M885 365L920 350 950 370 940 395 905 400Z"/>
+      <path d="M80 270L105 260 120 280 110 305 88 300Z"/>
+      <path d="M350 60L365 50 378 65 368 80Z"/>
+      <path d="M600 355L620 345 635 360 625 380Z"/>
+    </g>
+    <g id="markers"></g>
+  </svg>
+  </div>
+  <div class="legend"><span><i class="gold"></i> NEXT REGION</span><span><i></i> UPCOMING REGIONS</span><span>✓ ALREADY UNLOCKED</span></div>
+</section>
+<div class="lower">
+ <section class="panel"><h2>🌍 REGIONAL RELEASE ORDER</h2><div class="countrylist" id="countrylist"></div></section>
+ <section class="panel"><h2>🔊 STREAM AUDIO</h2>
+  <div class="controls"><button class="primary" id="startBtn">▶ START STREAM AUDIO</button><button id="muteBtn">🔊 MUTE</button></div>
+  <p class="note">Your uploaded synth track plays as looping background music. Your uploaded celebration sound plays when a region reaches its scheduled local midnight. Browsers require a tap before audio can start.</p>
+  <div class="controls" style="margin-top:12px"><label for="vol">Music volume</label><input id="vol" type="range" min="0" max="100" value="35"><span id="volval">35%</span></div>
+  <div class="note" id="audioStatus">Audio is ready. Tap “Start Stream Audio” once to enable it. If it fails, check the exact MP3 filenames in your repository.</div><div class="note">CUSTOM BACKGROUND: upload your chosen image to this repository as <b>gta6-background.jpg</b>. Keep it beside index.html.</div>
+ </section>
+</div>
+<footer>Fan-made countdown display • Not affiliated with Rockstar Games • Verify official launch timing before going live</footer>
+</div>
+<audio id="music" src="./launch-synth.mp3" loop preload="auto"></audio>
+<audio id="sfx" src="./launch-sfx.mp3" preload="auto"></audio>
+<script>
+// Local midnight on the scheduled date for each market. Verify these dates/times against official regional launch information before streaming.
+const RELEASE_DATE = "2026-11-19";
+const regions = [
+ {name:"New Zealand",flag:"🇳🇿",tz:"Pacific/Auckland",x:900,y:370},
+ {name:"Fiji",flag:"🇫🇯",tz:"Pacific/Fiji",x:950,y:330},
+ {name:"Australia (Sydney)",flag:"🇦🇺",tz:"Australia/Sydney",x:850,y:320},
+ {name:"Japan",flag:"🇯🇵",tz:"Asia/Tokyo",x:830,y:190},
+ {name:"South Korea",flag:"🇰🇷",tz:"Asia/Seoul",x:805,y:180},
+ {name:"Singapore",flag:"🇸🇬",tz:"Asia/Singapore",x:740,y:265},
+ {name:"Philippines",flag:"🇵🇭",tz:"Asia/Manila",x:785,y:235},
+ {name:"Thailand",flag:"🇹🇭",tz:"Asia/Bangkok",x:700,y:245},
+ {name:"India",flag:"🇮🇳",tz:"Asia/Kolkata",x:650,y:225},
+ {name:"Pakistan",flag:"🇵🇰",tz:"Asia/Karachi",x:610,y:205},
+ {name:"UAE",flag:"🇦🇪",tz:"Asia/Dubai",x:590,y:230},
+ {name:"Turkey",flag:"🇹🇷",tz:"Europe/Istanbul",x:520,y:160},
+ {name:"South Africa",flag:"🇿🇦",tz:"Africa/Johannesburg",x:515,y:330},
+ {name:"United Kingdom",flag:"🇬🇧",tz:"Europe/London",x:465,y:120},
+ {name:"Brazil",flag:"🇧🇷",tz:"America/Sao_Paulo",x:245,y:320},
+ {name:"USA (New York)",flag:"🇺🇸",tz:"America/New_York",x:250,y:150},
+ {name:"USA (Los Angeles)",flag:"🇺🇸",tz:"America/Los_Angeles",x:165,y:155}
+];
+function targetAtMidnight(tz){
+  // Convert midnight in a named timezone to its exact UTC instant using Intl offset correction.
+  const desired = new Date(RELEASE_DATE+"T00:00:00Z");
+  let guess = desired.getTime();
+  const fmt = new Intl.DateTimeFormat("en-CA",{timeZone:tz,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"});
+  for(let i=0;i<3;i++){
+    const p=Object.fromEntries(fmt.formatToParts(new Date(guess)).map(x=>[x.type,x.value]));
+    const represented=Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second);
+    guess += desired.getTime()-represented;
+  }
+  return guess;
+}
+regions.forEach(r=>r.target=targetAtMidnight(r.tz));
+regions.sort((a,b)=>a.target-b.target);
+const markers=document.getElementById("markers"), list=document.getElementById("countrylist");
+regions.forEach((r,i)=>{
+ const g=document.createElementNS("http://www.w3.org/2000/svg","g");g.setAttribute("class","marker");g.dataset.i=i;
+ const c=document.createElementNS("http://www.w3.org/2000/svg","circle");c.setAttribute("cx",r.x);c.setAttribute("cy",r.y);c.setAttribute("r",i===0?7:5);g.appendChild(c);
+ const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("x",r.x);t.setAttribute("y",r.y-12);t.textContent=r.flag;g.appendChild(t);markers.appendChild(g);
+ const item=document.createElement("div");item.className="country";item.id="country-"+i;
+ item.innerHTML=`<span class="flag">${r.flag}</span><span class="cname">${r.name}<span class="state">${r.tz.replaceAll("_"," ")}</span></span><span class="eta" id="eta-${i}">--:--:--</span>`;
+ list.appendChild(item);
+});
+const music=document.getElementById("music"),sfx=document.getElementById("sfx");
+let audioOn=false,muted=false,played=new Set();
+music.addEventListener("error",()=>{document.getElementById("audioStatus").textContent="Music file could not load. Check that launch-synth.mp3 is uploaded beside index.html and the filename matches exactly.";});
+sfx.addEventListener("error",()=>{document.getElementById("audioStatus").textContent="Celebration sound could not load. Check that launch-sfx.mp3 is uploaded beside index.html.";});
+music.addEventListener("canplay",()=>{document.getElementById("audioStatus").textContent="Music file loaded. Tap Start Stream Audio to play.";});
+document.getElementById("startBtn").addEventListener("click",async()=>{
+ try{await music.play();audioOn=true;document.getElementById("audioStatus").textContent="Background music is playing.";document.getElementById("startBtn").textContent="♫ AUDIO PLAYING";}
+ catch(e){document.getElementById("audioStatus").textContent="Playback failed: "+(e.message||"Browser blocked playback")+". Check the MP3 file and tap Start Stream Audio again."}
+});
+document.getElementById("muteBtn").addEventListener("click",()=>{
+ muted=!muted;music.muted=muted;sfx.muted=muted;document.getElementById("muteBtn").textContent=muted?"🔇 UNMUTE":"🔊 MUTE";
+});
+document.getElementById("vol").addEventListener("input",e=>{music.volume=e.target.value/100;document.getElementById("volval").textContent=e.target.value+"%";});
+music.volume=.35;
+function fmt(n){return String(n).padStart(2,"0")}
+function tick(){
+ const now=Date.now();let next=regions.findIndex(r=>r.target>now);
+ regions.forEach((r,i)=>{
+  const diff=r.target-now,el=document.getElementById("country-"+i),eta=document.getElementById("eta-"+i);
+  el.classList.toggle("done",diff<=0);el.classList.toggle("active",i===next);
+  markers.children[i].classList.toggle("active",i===next);
+  if(diff>0){let s=Math.floor(diff/1000);eta.textContent=`${Math.floor(s/86400)}d ${fmt(Math.floor(s%86400/3600))}:${fmt(Math.floor(s%3600/60))}:${fmt(s%60)}`}
+  else eta.textContent="UNLOCKED";
+  if(diff<=0 && !played.has(i) && audioOn){played.add(i);sfx.currentTime=0;sfx.play().catch(()=>{});}
+ });
+ if(next<0){document.getElementById("headline").textContent="ALL LISTED REGIONS HAVE REACHED MIDNIGHT";document.getElementById("nextline").textContent="The global countdown sequence is complete.";}
+ else{
+  const r=regions[next],d=r.target-now,s=Math.max(0,Math.floor(d/1000));
+  document.getElementById("headline").textContent="NEXT REGION UNLOCKS IN";
+  document.getElementById("nextline").innerHTML=`NEXT: <strong>${r.flag} ${r.name}</strong> • Local midnight • ${r.tz}`;
+  document.getElementById("days").textContent=fmt(Math.floor(s/86400));
+  document.getElementById("hours").textContent=fmt(Math.floor(s%86400/3600));
+  document.getElementById("mins").textContent=fmt(Math.floor(s%3600/60));
+  document.getElementById("secs").textContent=fmt(s%60);
+ }
+}
+tick();setInterval(tick,1000);
+</script>
+</body>
+</html>
